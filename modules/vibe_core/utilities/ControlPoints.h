@@ -19,65 +19,63 @@ namespace vibe
         ~ControlPoints();
 
         /** Get all points. */
-        const juce::Array<juce::Point<float>>& getPoints() const;
+        const juce::Array<juce::Point<int>>& getPoints() const;
 
         /** Adds a point. */
-        void addPoint(const juce::Point<float>& point, bool setSelected = false);
+        void add(const juce::Point<int>& point, bool setSelected = false);
 
         /** Removes a point. */
-        //void deletePoint(const juce::Point<float>& point);
+        //void deletePoint(const juce::Point<int>& point);
 
         /** Removes a point based on index value. */
-        void deletePoint(int index);
+        void erase(int index);
 
         /* Sets new X and Y coordinate for point at given index. */
-        void setPointXY(int x, int y, int index);
+        void setXY(int x, int y, int index);
 
         /* Sets new Y coordinate for point at given index. */
-        void setPointY(int y, int index);
+        void setY(int y, int index);
 
         /** Sets point selected. */
-        void setPointSelected(const juce::Point<float>& point);
+        void setSelected(const juce::Point<int>& point);
 
         /** Sets point selected based on index value. */
-        void setPointSelected(int index);
+        void setSelected(int index);
 
         /** Get index of selected point. */
-        int getIndexPointSelected() const;
+        int getIndexSelected() const;
 
         /** Get index of point close to position. */
-        int getIndexPointCloseBy(int x, int y, int margin) const;
+        int getIndexCloseBy(int x, int y, int margin) const;
 
         /** Get total of all points. */
-        int getPointsTotal() const;
+        int getTotal() const;
 
         /** Set maximum number of points. */
-        void setPointsMax(int max);
+        void setMax(int max);
 
         /** Get maximum possible number of points. */
-        int getPointsMax() const;
-
-        /** True if this is the first point. */
-        bool isFirstPoint(const juce::Point<float>& point) const;
-
-        /** True if this is the last point. */
-        bool isLastPoint(const juce::Point<float>& point) const;
+        int getMax() const;
 
     private:
         /** The points array. */
-        juce::Array<juce::Point<float>> points;
+        juce::Array<juce::Point<int>> points;
 
         /** The index of the selected point. */
-        int indexPointSelected;
+        int indexSelected;
 
         /** The maximum number of points. */
-        int maxPoints;
-
+        int max;
+        
         /** Sorts the points based on the X position,
             X is used as midi in value (ranging from 0 to 127) and will be transformed to Y. */
-        void sortPoints();
+        void sort();
 
-        //==============================================================================
+        /** Comparator for sorting points based on their x-coordinate. */
+        struct PointComparator
+        {
+            int compareElements(const juce::Point<int> &p1, const juce::Point<int> &p2) const;
+        };
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ControlPoints)
     }; // class ControlPoints

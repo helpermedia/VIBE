@@ -1,8 +1,13 @@
+/**
+ * @file    ControlPoints.cpp
+ * @author  Marcel Ritsema
+ */
+
 #include "ControlPoints.h"
 namespace vibe {
 
     ControlPoints::ControlPoints()
-        : indexPointSelected(-1), maxPoints(12)
+        : indexSelected(-1), max(12)
     {
 
     }
@@ -11,65 +16,65 @@ namespace vibe {
 
     }
 
-    const juce::Array<juce::Point<float>> &ControlPoints::getPoints() const
+    const juce::Array<juce::Point<int>> &ControlPoints::getPoints() const
     {
         return points;
     }
 
-    void ControlPoints::addPoint(const juce::Point<float> &point, bool setSelected)
+    void ControlPoints::add(const juce::Point<int> &point, bool selected)
     {
-        points.add(point);
-        sortPoints();
-        if (setSelected)
-            setPointSelected(point);
+        PointComparator comparator;
+        points.addSorted(comparator, point);
+        if (selected)
+            setSelected(point);
     }
 
-    void ControlPoints::deletePoint(int index)
+    void ControlPoints::erase(int index)
     {
         // Remove element on specific position.
         points.remove(index);
 
         // Set selected index to -1.
-        setPointSelected(-1);
+        setSelected(-1);
     }
 
-    void ControlPoints::setPointXY(int x, int y, int index)
+    void ControlPoints::setXY(int x, int y, int index)
     {
         DBG("Set PointXY Called. X = " + juce::String(x) + " and Y = " + juce::String(y) + " and Index = " + juce::String(index));
         auto& point = points.getReference(index);
         point.setXY(x, y);
     }
 
-    void ControlPoints::setPointY(int y, int index)
+    void ControlPoints::setY(int y, int index)
     {
         auto& point = points.getReference(index);
         point.setY(y);
         DBG("Set PointY Called. X = " + juce::String(point.getX()) + " and Y = " + juce::String(y) + " and Index = " + juce::String(index));
     }
 
-    void ControlPoints::setPointSelected(const juce::Point<float> &point)
+    void ControlPoints::setSelected(const juce::Point<int> &point)
     {
         int index = points.indexOf(point);
 
         if (index != -1)
-            setPointSelected(index);
+            setSelected(index);
     }
 
-    void ControlPoints::setPointSelected(int index)
+    void ControlPoints::setSelected(int index)
     {
-        indexPointSelected = index;
+        indexSelected = index;
     }
 
-    int ControlPoints::getIndexPointSelected() const
+    int ControlPoints::getIndexSelected() const
     {
-        return indexPointSelected;
+        return indexSelected;
     }
 
-    int ControlPoints::getIndexPointCloseBy(int x, int y, int margin) const
+    int ControlPoints::getIndexCloseBy(int x, int y, int margin) const
     {
         for (int i = 0; i < points.size(); ++i)
         {
-            const juce::Point<float>& point = points[i];
+            const juce::Point<int>& point = points[i];
             if (std::abs(x - point.getX()) < margin && std::abs(y - point.getY()) < margin)
             {
                 // Found a point close by, return its index.
@@ -81,40 +86,30 @@ namespace vibe {
         return -1;
     }
 
-    int ControlPoints::getPointsTotal() const
+    int ControlPoints::getTotal() const
     {
         return static_cast<int>(points.size());
     }
 
-    bool ControlPoints::isFirstPoint(const juce::Point<float> &point) const
+    void ControlPoints::setMax(int maximum)
     {
-        return false;
+        max = maximum;
     }
 
-    bool ControlPoints::isLastPoint(const juce::Point<float> &point) const
+    int ControlPoints::getMax() const
     {
-        return false;
+        return max;
     }
 
-    void ControlPoints::setPointsMax(int max)
+    void ControlPoints::sort()
     {
-        maxPoints = max;
+        PointComparator comparator;
+        points.sort(comparator);
     }
 
-    int ControlPoints::getPointsMax() const
+    int ControlPoints::PointComparator::compareElements(const juce::Point<int> &p1, const juce::Point<int> &p2) const
     {
-        return maxPoints;
-    }
-
-    void ControlPoints::sortPoints()
-    {
-        // Lambda comparator function for sorting points.
-        auto comparePoints = [](const juce::Point<float>& p1, const juce::Point<float>& p2) {
-            // Compare based on x-coordinate.
-            return p1.getX() < p2.getX();
-        };
-
-        std::sort(points.begin(), points.end(), comparePoints);
+        return p1.getX() - p2.getX();
     }
 
 } // namespace vibe
