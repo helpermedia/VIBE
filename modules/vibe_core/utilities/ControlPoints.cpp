@@ -1,5 +1,4 @@
 #include "ControlPoints.h"
-
 namespace vibe {
 
     ControlPoints::ControlPoints()

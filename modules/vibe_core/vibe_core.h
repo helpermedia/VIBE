@@ -1,5 +1,3 @@
-
-
 /*******************************************************************************
 
     BEGIN_JUCE_MODULE_DECLARATION
@@ -8,8 +6,9 @@
     vendor:         Helpermedia
     version:        0.0.1
     name:           VIBE Core
+    description:    Basic classes for other Vibe modules
     license:        MIT
-    dependencies:   juce_core, juce_graphics
+    dependencies:   juce_core juce_graphics
 
     END_JUCE_MODULE_DECLARATION
 
@@ -20,3 +19,7 @@
 
 #include <juce_core/juce_core.h>
 #include <juce_graphics/juce_graphics.h>
+
+#include <algorithm>
+
+#include "utilities/ControlPoints.h"

@@ -10,9 +10,6 @@
 
 #pragma once
 
-#include <vibe_core/vibe_core.h>
-#include <algorithm>
-
 namespace vibe
 {
     class ControlPoints
