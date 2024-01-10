@@ -16,7 +16,7 @@ namespace vibe {
 
     }
 
-    const juce::Array<juce::Point<int>> &ControlPoints::getPoints() const
+    const juce::Array<juce::Point<int>> &ControlPoints::getAll() const
     {
         return points;
     }

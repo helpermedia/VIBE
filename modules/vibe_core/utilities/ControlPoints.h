@@ -19,7 +19,7 @@ namespace vibe
         ~ControlPoints();
 
         /** Get all points. */
-        const juce::Array<juce::Point<int>>& getPoints() const;
+        const juce::Array<juce::Point<int>>& getAll() const;
 
         /** Adds a point. */
         void add(const juce::Point<int>& point, bool setSelected = false);
