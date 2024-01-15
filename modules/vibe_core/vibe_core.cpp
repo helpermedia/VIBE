@@ -1,3 +1,3 @@
 #include "vibe_core.h"
 
-#include "utilities/ControlPoints.cpp"
+#include "utilities/vibe_Curve.cpp"
