@@ -5,7 +5,7 @@
  *
  * The Curve class provides methods to add, delete, and modify control points,
  * which are automatically sorted based on their x-coordinate.
- * Based on the CurveType and control points, the curve is returned as a Path.
+ * Based on CurveType and control points, the curve is returned as Path.
  */
 
 #pragma once
@@ -35,43 +35,37 @@ namespace vibe
         const juce::Point<float> &getPoint(int index) const;
 
         /** Adds a control point. */
+        void addPoint(const juce::Point<float> &point);
+
+        /** Adds a control point. */
         void addPoint(const juce::Point<int> &point);
-
-        /** Adds a control point. */
-        void addPoint(const juce::Point<float>& point);
-
-        /** Adds a control point. */
-        void addPoint(int x, int y);
 
         /** Adds a control point. */
         void addPoint(float x, float y);
 
-        /** Removes a control point. */
-        // void erasePoint(const juce::Point<int>& point);
+        /** Adds a control point. */
+        void addPoint(int x, int y);
 
         /** Removes a control point based on index value. */
         void erasePoint(int index);
 
         /* Sets new X and Y coordinate for a control point at given index. */
-        void setPointXY(int x, int y, int index);
-
-        /* Sets new X and Y coordinate for a control point at given index. */
         void setPointXY(float x, float y, int index);
 
-        /* Sets new Y coordinate for a control point at given index. */
-        void setPointY(int y, int index);
+        /* Sets new X and Y coordinate for a control point at given index. */
+        void setPointXY(int x, int y, int index);
 
         /* Sets new Y coordinate for a control point at given index. */
         void setPointY(float y, int index);
 
         /* Sets new Y coordinate for a control point at given index. */
-        void setPointSelected(int index);
+        void setPointY(int y, int index);
 
         /** Get index of control point close to given position. */
-        int getIndexPointCloseBy(int x, int y, int margin) const;
+        int getIndexPointNearby(int x, int y, int margin) const;
 
         /** Get index of control point close to given position. */
-        int getIndexPointCloseBy(float x, float y, int margin) const;
+        int getIndexPointNearby(float x, float y, int margin) const;
 
         /** Get maximum possible number of control points. */
         int getPointsMax() const;
@@ -81,6 +75,9 @@ namespace vibe
 
         /** Set the curve type. */
         void setCurveType(CurveType curveType);
+
+        /** Get (curved) path. */
+        const juce::Path& getPath() const;
 
     private:
         /** The curve type. */
@@ -92,9 +89,14 @@ namespace vibe
         /** The maximum number of control points. */
         int pointsMax;
 
-        /** Sorts the points based on the X position,
-            X is used as midi in value (ranging from 0 to 127) and will be transformed to Y. */
+        /** The (curved) path. */
+        juce::Path path;
+
+        /** Sorts the points based on the X position. */
         void sortPoints();
+
+        /** Creates the path based on type and points. */
+        void createPath();
 
         /** Comparator for sorting points based on their x-coordinate. */
         struct PointComparator
