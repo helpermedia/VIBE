@@ -14,7 +14,7 @@ namespace vibe
 {
     enum class CurveType
     {
-        Linear,     // y = mx + c (also used for Piecewise Linear Interpolation)
+        Linear,     // y = mx + c
         Quadratic,  // y = ax^2 + bx + c
         Cubic,      // y = ax^3 + bx^2 + cx + d
         //Bezier,
@@ -97,6 +97,9 @@ namespace vibe
 
         /** Creates the path based on type and points. */
         void createPath();
+
+        /** Look-up table for fast transformation of X to Y. */
+        int lut[128] = { 0 };
 
         /** Comparator for sorting points based on their x-coordinate. */
         struct PointComparator

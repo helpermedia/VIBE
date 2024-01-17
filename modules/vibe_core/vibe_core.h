@@ -21,3 +21,5 @@
 #include <juce_graphics/juce_graphics.h>
 
 #include "utilities/vibe_Curve.h"
+#include "utilities/vibe_BaseSpline.h"
+#include "utilities/vibe_LinearSpline.h"

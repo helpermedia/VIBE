@@ -5,7 +5,8 @@
 
 #include "vibe_Curve.h"
 
-namespace vibe {
+namespace vibe
+{
 
     Curve::Curve() : cType(CurveType::Linear), pointsMax(12)
     {
@@ -69,6 +70,7 @@ namespace vibe {
         // Point position changed, path needs to be (re)created.
         createPath();
     }
+
     void Curve::setPointXY(int x, int y, int index)
     {
         setPointXY(static_cast<float>(x), static_cast<float>(y), index);
@@ -85,8 +87,7 @@ namespace vibe {
 
     void Curve::setPointY(int y, int index)
     {
-        auto &point = points.getReference(index);
-        point.setY(static_cast<float>(y));
+        setPointY(static_cast<float>(y), index);
     }
 
     int Curve::getIndexPointNearby(float x, float y, int margin) const
@@ -140,28 +141,54 @@ namespace vibe {
 
     void Curve::createPath()
     {
-        
+
         DBG("Create path called.");
-        
+
         // Reset path.
         path.clear();
 
         if (points.size() > 0)
         {
+            // Start with first point.
             path.startNewSubPath(points[0]);
 
-            switch (cType)
+            // If we only have two points, type is linear.
+            CurveType type = (points.size() == 2 ? CurveType::Linear : cType);
+
+            // Variable for interpolated points.
+            juce::Array<juce::Point<double>> iPoints;
+
+            switch (type)
             {
                 case CurveType::Linear:
-                    for (int i = 1; i < points.size(); ++i)
+                {
+                    // Create spline and interpolate.
+                    vibe::LinearSpline spline(points);
+
+                    // Get the interpolated points (which are just the nodes in this case).
+                    iPoints = spline.getInterpolatedPoints();
+
+                    // Fill the LUT.
+                    for (int i = 20; i <= 532; i = i + 4)
                     {
-                        path.lineTo(points[i]);
+                        double y = spline.getY((i - 20));
+                        DBG("Interpolated rounded point: " + juce::String((i - 20) / 4) + ", " + juce::String(std::abs(128 - (y / 4))));
                     }
+                    break;
+                }
+                case CurveType::Quadratic:
                     break;
                 case CurveType::Cubic:
                     break;
-                case CurveType::Quadratic:
-                    break;
+            }
+
+            if (iPoints.size() > 0)
+            {
+                // Add the interpolated points to the path.
+                for (auto &point : iPoints)
+                {
+                    path.lineTo(point.toFloat());
+                }
             }
         }
     }
