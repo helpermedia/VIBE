@@ -172,7 +172,7 @@ namespace vibe
                     for (int i = 20; i <= 532; i = i + 4)
                     {
                         double y = spline.getY((i - 20));
-                        DBG("Interpolated rounded point: " + juce::String((i - 20) / 4) + ", " + juce::String(std::abs(128 - (y / 4))));
+                        DBG("Interpolated rounded point: " + juce::String((i - 20) / 4) + ", " + juce::String(std::abs(128 - std::round(y / 4))));
                     }
                     break;
                 }

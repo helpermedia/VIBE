@@ -23,11 +23,7 @@ namespace vibe
         virtual double getY(const double x) = 0;
 
         /** Returns the interpolated x and y coordinates, which can be used to draw a curve. */
-        virtual juce::Array<juce::Point<double>>& getInterpolatedPoints()
-        {
-            interpolate();
-            return iPoints;
-         }
+        virtual juce::Array<juce::Point<double>>& getInterpolatedPoints();
 
     protected:
         /* Data points (Knots). */
