@@ -32,7 +32,7 @@ namespace vibe
         // Check if there are two control points (start and end of segment).
         if (cPoints.size() == 2)
         {
-            // Calculate the slope and y-intercept.
+            // Calculate the slope (m) and y-intercept (c).
             float m = (cPoints[1].getY() - cPoints[0].getY()) / (cPoints[1].getX() - cPoints[0].getX());
             float c = cPoints[0].getY() - m * cPoints[0].getX();
 
@@ -45,8 +45,8 @@ namespace vibe
     void LinearSpline::interpolate()
     {
         // The interpolate method creates a set of interpolated points,
-        // for a Linear Spline simply the nodes are enough to draw a curve.
-        for (auto &point : nPoints)
+        // for a Linear Spline simply the data points (knots) are enough to draw a curve.
+        for (auto &point : dPoints)
         {
             iPoints.add(point.toDouble()); // toDouble() creates a copy.
         }

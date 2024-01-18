@@ -14,7 +14,7 @@ namespace vibe
     {
     public:
         /** Constructor. */
-        BaseSpline(const juce::Array<juce::Point<float>> &points) : nPoints(points) {}
+        BaseSpline(const juce::Array<juce::Point<float>> &points) : dPoints(points) {}
 
         /** Destructor. */
         virtual ~BaseSpline() {}
@@ -30,8 +30,8 @@ namespace vibe
          }
 
     protected:
-        /* Nodes (Knots). */
-        juce::Array<juce::Point<float>> nPoints;
+        /* Data points (Knots). */
+        juce::Array<juce::Point<float>> dPoints;
 
         /* Interpolated points. */
         juce::Array<juce::Point<double>> iPoints;

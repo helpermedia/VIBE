@@ -11,7 +11,7 @@ namespace vibe
     class LinearSpline : public BaseSpline
     {
     public:
-        LinearSpline(const juce::Array<juce::Point<float>> &nodes) : BaseSpline(nodes) {}
+        LinearSpline(const juce::Array<juce::Point<float>> &points) : BaseSpline(points) {}
 
         double getY(const double x);
 
